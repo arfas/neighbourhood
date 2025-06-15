@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, TextField, Button, Box, Alert, CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,6 +43,17 @@ const LoginPage = () => {
     // Assuming backend uses 'username' for login field with obtain_auth_token
     const credentials = { username: usernameOrEmail, password };
     dispatch(loginUser(credentials));
+import React, { useState } from 'react';
+import { Container, Typography, TextField, Button, Box } from '@mui/material';
+
+const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log({ email, password });
+    // Actual login logic will be added later
   };
 
   return (
@@ -57,13 +69,17 @@ const LoginPage = () => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
+
         {error && <Alert severity="error" sx={{ width: '100%', mt: 1 }}>{typeof error === 'object' ? JSON.stringify(error) : error}</Alert>}
         {formError && <Alert severity="error" sx={{ width: '100%', mt: 1 }}>{formError}</Alert>}
+
+
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
+
             id="usernameOrEmail" // Changed id for clarity
             label="Username or Email"
             name="usernameOrEmail"
@@ -71,6 +87,14 @@ const LoginPage = () => {
             autoFocus
             value={usernameOrEmail}
             onChange={(e) => setUsernameOrEmail(e.target.value)}
+
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             margin="normal"
@@ -89,6 +113,7 @@ const LoginPage = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+
             disabled={isLoading}
           >
             {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
@@ -101,6 +126,11 @@ const LoginPage = () => {
               </Link>
             </Grid>
           </Grid> */}
+
+          >
+            Sign In
+          </Button>
+
         </Box>
       </Box>
     </Container>

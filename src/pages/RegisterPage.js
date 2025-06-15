@@ -1,14 +1,19 @@
+
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, TextField, Button, Box, Alert, CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { registerUser, resetAuthStatus } from '../../src/features/auth/authSlice'; // Adjusted path
+import React, { useState } from 'react';
+import { Container, Typography, TextField, Button, Box } from '@mui/material';
+
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
   // Optional profile fields, can be left blank
   const [interests, setInterests] = useState('');
   const [location, setLocation] = useState('');
@@ -54,6 +59,19 @@ const RegisterPage = () => {
       profile: Object.keys(profileData).length > 0 ? profileData : null,
     };
     dispatch(registerUser(userData));
+
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Basic validation example
+    if (password !== confirmPassword) {
+      console.error("Passwords don't match!");
+      // Handle password mismatch error, e.g., set an error state and display a message
+      return;
+    }
+    console.log({ username, email, password });
+    // Actual registration logic will be added later
+
   };
 
   return (
@@ -69,8 +87,10 @@ const RegisterPage = () => {
         <Typography component="h1" variant="h5">
           Register
         </Typography>
+
         {error && <Alert severity="error" sx={{ width: '100%', mt: 1 }}>{typeof error === 'object' ? JSON.stringify(error) : error}</Alert>}
         {formError && <Alert severity="error" sx={{ width: '100%', mt: 1 }}>{formError}</Alert>}
+
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
             margin="normal"
@@ -91,7 +111,9 @@ const RegisterPage = () => {
             id="email"
             label="Email Address"
             name="email"
+
             type="email"
+
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -120,6 +142,7 @@ const RegisterPage = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+
           <TextField
             margin="normal"
             fullWidth
@@ -138,14 +161,20 @@ const RegisterPage = () => {
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           />
+
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+
             disabled={isLoading}
           >
             {isLoading ? <CircularProgress size={24} /> : 'Register'}
+
+          >
+            Register
+
           </Button>
         </Box>
       </Box>
