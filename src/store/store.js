@@ -8,9 +8,4 @@ export const store = configureStore({
     auth: authReducer,
     events: eventReducer, // Add eventReducer to the store
   },
-
-
-export const store = configureStore({
-  reducer: {}, // Start with an empty reducer
-
 });
