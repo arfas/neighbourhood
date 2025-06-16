@@ -8,8 +8,9 @@ import { theme } from './theme/theme';
 import Navbar from './components/Navbar';
 import {
   HomePage,
-  LoginPage,
-  RegisterPage,
+  // LoginPage, // Will be removed
+  // RegisterPage, // Will be removed
+  AuthPage, // Added
   ProfilePage,
   CreateEventPage,
   EventDetailPage
@@ -23,8 +24,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<AuthPage />} />
+          <Route path="/register" element={<AuthPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/create-event" element={<CreateEventPage />} />
           <Route path="/event/:id" element={<EventDetailPage />} />
