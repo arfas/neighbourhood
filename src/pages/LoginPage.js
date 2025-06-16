@@ -26,6 +26,9 @@ const LoginPage = () => {
     // If there was an error during fetchUserProfile or login, it will be in 'error'
     // The resetAuthStatus in the return will clear isSuccess on unmount or if deps change before success
     return () => {
+        if(isSuccess || error) { // Reset status if page is left after success/error
+            dispatch(resetAuthStatus());
+        }
       if(isSuccess || error) { // Reset status if page is left after success/error
         dispatch(resetAuthStatus());
       }
@@ -36,6 +39,8 @@ const LoginPage = () => {
     event.preventDefault();
     setFormError('');
     if (!usernameOrEmail || !password) {
+        setFormError("Username/Email and Password are required.");
+        return;
       setFormError("Username/Email and Password are required.");
       return;
     }
@@ -45,6 +50,69 @@ const LoginPage = () => {
   };
 
   return (
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Login
+        </Typography>
+        {error && <Alert severity="error" sx={{ width: '100%', mt: 1 }}>{typeof error === 'object' ? JSON.stringify(error) : error}</Alert>}
+        {formError && <Alert severity="error" sx={{ width: '100%', mt: 1 }}>{formError}</Alert>}
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="usernameOrEmail" // Changed id for clarity
+            label="Username or Email"
+            name="usernameOrEmail"
+            autoComplete="email" // Or "username"
+            autoFocus
+            value={usernameOrEmail}
+            onChange={(e) => setUsernameOrEmail(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={isLoading}
+          >
+            {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+          </Button>
+          {/* Add Link to Register page if desired */}
+          {/* <Grid container>
+            <Grid item>
+              <Link component={RouterLink} to="/register" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid> */}
+        </Box>
+      </Box>
+    </Container>
+  );
+};
+
+export default LoginPage;
       <Container component="main" maxWidth="xs">
         <Box
             sx={{

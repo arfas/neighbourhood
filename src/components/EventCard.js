@@ -31,6 +31,46 @@ const EventCard = ({ event }) => {
     }
   }
 
+
+
+  return (
+    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', m: 1 }}>
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography gutterBottom variant="h5" component="div">
+          {event.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Date: {formattedDate} at {formattedTime}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Location: {event.location}
+        </Typography>
+        {event.creator_username && ( // Display creator username if available
+          <Typography variant="caption" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+            Created by: {event.creator_username}
+          </Typography>
+        )}
+        <Typography variant="body2" color="text.primary" sx={{
+          mt: 1,
+          display: '-webkit-box',
+          WebkitBoxOrient: 'vertical',
+          WebkitLineClamp: 3,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          minHeight: 60 // Ensure space even if description is short, for card consistency
+        }}>
+          {event.description}
+        </Typography>
+      </CardContent>
+      <CardActions sx={{ justifyContent: 'flex-start', mt: 'auto' }}> {/* Align button to left, push to bottom */}
+        <Button size="small" component={Link} to={`/event/${event.id}`}>
+          View Details
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
+export default EventCard;
   return (
       <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', m: 1 }}>
         <CardContent sx={{ flexGrow: 1 }}>
