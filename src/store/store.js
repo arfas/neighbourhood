@@ -8,4 +8,3 @@ export const store = configureStore({
     events: eventReducer, // Add eventReducer to the store
   },
 });
-});

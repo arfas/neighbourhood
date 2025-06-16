@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchEventsThunk, resetEventStatus } from '../../src/features/events/eventSlice'; // Adjusted path
 import EventCard from '../components/EventCard'; // Adjusted path
 
-
 // Mock events as fallback data
 const mockEvents = [
   { id: '1', name: 'Tech Conference 2024', date: '2024-09-10', time: '09:00', location: 'Convention Center Hall A', description: 'An annual conference bringing together leading minds in technology, innovation, and software development. Features keynote speakers, workshops, and networking opportunities.' },
@@ -39,65 +38,7 @@ const HomePage = () => {
     if (tagsFilter) queryParams.tags = tagsFilter;
     dispatch(fetchEventsThunk(queryParams));
   };
-  return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Upcoming Events
-        </Typography>
-      </Box>
 
-      {/* Filtering UI */}
-      <Box component="form" onSubmit={handleFilterSubmit} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 4 }}>
-        <TextField
-          label="Filter by Location"
-          variant="outlined"
-          size="small"
-          value={locationFilter}
-          onChange={(e) => setLocationFilter(e.target.value)}
-        />
-        <TextField
-          label="Filter by Tags (comma-separated)"
-          variant="outlined"
-          size="small"
-          value={tagsFilter}
-          onChange={(e) => setTagsFilter(e.target.value)}
-        />
-        <Button type="submit" variant="contained" disabled={isLoading}>
-          Apply Filters
-        </Button>
-      </Box>
-
-      {/* Event Listing */}
-      {isLoading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
-          <CircularProgress />
-        </Box>
-      )}
-      {error && (
-        <Alert severity="error" sx={{ my: 2 }}>
-          Error fetching events: {typeof error === 'object' ? JSON.stringify(error) : error}
-        </Alert>
-      )}
-      {!isLoading && !error && events.length === 0 && (
-        <Typography variant="subtitle1" sx={{ textAlign: 'center', my: 3 }}>
-          No events found. Try adjusting your filters or check back later!
-        </Typography>
-      )}
-      {!isLoading && !error && events.length > 0 && (
-        <Grid container spacing={3}>
-          {events.map((event) => (
-            <Grid item xs={12} sm={6} md={4} key={event.id}>
-              <EventCard event={event} />
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </Container>
-  );
-};
-
-export default HomePage;
   // Use API events if available, otherwise fallback to mock events
   const displayEvents = events.length > 0 ? events : mockEvents;
 
