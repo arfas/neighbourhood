@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions
 from django.db.models import Q
 from .models import Event
 from .serializers import EventSerializer
+from .permissions import IsCreatorOrReadOnly # Import custom permission
 
 class EventViewSet(viewsets.ModelViewSet):
     """
@@ -12,7 +13,7 @@ class EventViewSet(viewsets.ModelViewSet):
     - Combined: /api/events/?location=CityName&tags=react
     """
     serializer_class = EventSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsCreatorOrReadOnly] # Use custom permission
 
     def get_queryset(self):
         """
