@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createEventThunk, resetEventStatus } from '../../src/features/events/eventSlice'; // Adjusted path
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'; // Correct if using v3, or remove V3 for older
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'; // FIXED: Removed V3 from path
 import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import {isValid as dateIsValid, format as formatDate} from 'date-fns';
 
@@ -58,6 +59,7 @@ const CreateEventPage = () => {
   useEffect(() => {
     return () => {
         dispatch(resetEventStatus());
+      dispatch(resetEventStatus());
     }
   }, [dispatch]);
 
@@ -75,6 +77,8 @@ const CreateEventPage = () => {
     if (!dateIsValid(date) || !dateIsValid(time)) {
         setFormError('Please enter valid date and time.');
         return;
+      setFormError('Please enter valid date and time.');
+      return;
     }
 
     const eventData = {
@@ -182,6 +186,96 @@ const CreateEventPage = () => {
         </Box>
       </Container>
     </LocalizationProvider>
+  );
+};
+
+export default CreateEventPage;
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <Container component="main" maxWidth="md">
+          <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+          >
+            <Typography component="h1" variant="h5">
+              Create New Event
+            </Typography>
+            {error && <Alert severity="error" sx={{ width: '100%', mt: 2 }}>{typeof error === 'object' ? JSON.stringify(error) : error}</Alert>}
+            {formError && <Alert severity="error" sx={{ width: '100%', mt: 2 }}>{formError}</Alert>}
+            {successMessage && <Alert severity="success" sx={{ width: '100%', mt: 2 }}>{successMessage}</Alert>}
+
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, width: '100%' }}>
+              <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="eventName"
+                  label="Event Name"
+                  name="eventName"
+                  value={eventName}
+                  onChange={(e) => setEventName(e.target.value)}
+                  autoFocus
+              />
+              <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="description"
+                  label="Event Description"
+                  name="description"
+                  multiline
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+              />
+              <DatePicker
+                  label="Event Date"
+                  value={date}
+                  onChange={(newValue) => setDate(newValue)}
+                  slotProps={{ textField: { fullWidth: true, margin: "normal", required: true } }}
+              />
+              <TimePicker
+                  label="Event Time"
+                  value={time}
+                  onChange={(newValue) => setTime(newValue)}
+                  slotProps={{ textField: { fullWidth: true, margin: "normal", required: true } }}
+              />
+              <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="location"
+                  label="Event Location"
+                  name="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+              />
+              <TextField
+                  margin="normal"
+                  fullWidth
+                  id="tags"
+                  label="Tags (comma-separated)"
+                  name="tags"
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
+                  placeholder="e.g., tech, music, art"
+              />
+              <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  disabled={isLoading}
+              >
+                {isLoading ? <CircularProgress size={24} /> : 'Create Event'}
+              </Button>
+            </Box>
+          </Box>
+        </Container>
+      </LocalizationProvider>
   );
 };
 

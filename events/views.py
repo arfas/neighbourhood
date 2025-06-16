@@ -15,6 +15,9 @@ class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     permission_classes = [IsCreatorOrReadOnly] # Use custom permission
 
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
     def get_queryset(self):
         """
         Optionally restricts the returned events by filtering against
